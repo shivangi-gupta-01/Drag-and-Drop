@@ -59,10 +59,23 @@ class ProjectState extends State<Project> {
       ProjectStatus.Active
     );
     this.projects.push(newProject);
+    this.updateListners()
+  }
+
+  moveProject(projectId: string, newStatus: ProjectStatus){
+    const project = this.projects.find(prj => prj.id === projectId)
+    if(project){
+      project.status=newStatus;
+      this.updateListners()
+    }
+  }
+
+  private updateListners(){
     for (const listenerFun of this.listeners) {
       listenerFun(this.projects.slice());
     }
   }
+    
 }
 // creating global const for generating new project
 const projectState = ProjectState.getInstance();
@@ -232,10 +245,11 @@ class ProjectList
       listEl.classList.add("droppable");
     }
   }
-  // @autobind
+  @autobind
   dropHandler(event: DragEvent): void {
     // console.log("working")
     const prjId = event.dataTransfer!.getData("text/plain")
+    projectState.moveProject (prjId, this.type ==='active'? ProjectStatus.Active :ProjectStatus.Finished)
     // console.log(event);
   }
   @autobind
