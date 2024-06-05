@@ -235,7 +235,7 @@ class ProjectList
   // @autobind
   dropHandler(event: DragEvent): void {
     // console.log("working")
-    console.log(event.dataTransfer!.getData("text/plain"));
+    const prjId = event.dataTransfer!.getData("text/plain")
     // console.log(event);
   }
   @autobind
